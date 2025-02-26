@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票预测计算器 | 斐波那契计算器</title>
+    <meta name="description" content="专业斐波那契比例计算工具，实时计算23.6%、38.2%、50%、61.8%、78.6%、88.6%等斐波那契比例位。快速获取精确计算结果，适用于金融交易和股票技术分析。">
+    <meta name="keywords" content="黄金分割计算器,斐波那契比例计算,交易策略计算,金融分析工具,在线计算器,技术分析工具,股票预测计算">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "股票预测计算器",
+        "operatingSystem": "Web",
+        "applicationCategory": "FinancialApplication",
+        "description": "专业股票预测计算器在线工具，支持多个斐波那契比例实时计算",
+        "softwareVersion": "2.0",
+        "author": {
+            "@type": "Organization",
+            "name": "股票技术分析工具站"
+        }
+    }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f5f6fa;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 30px 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e3e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .result-container {
+            margin-top: 25px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fb;
+            border-radius: 8px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .ratio-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .result-value {
+            color: #27ae60;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+                margin: 20px 0;
+            }
+
+            .container {
+                padding: 15px;
+                margin: 0 10px;
+            }
+
+            input {
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+
+            .result-item {
+                padding: 12px;
+            }
+
+            .ratio-label {
+                font-size: 0.85rem;
+            }
+
+            .result-value {
+                font-size: 1rem;
+            }
+        }
+
+		.content-section {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        .content-section p {
+            color: #34495e;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>股票预测计算器</h1>
+    
+    <div class="container">
+        <div class="input-group">
+            <label for="b">高位：</label>
+            <input type="number" id="b" step="any" placeholder="输入高位数值">
+        </div>
+        <div class="input-group">
+            <label for="a">低位：</label>
+            <input type="number" id="a" step="any" placeholder="输入低位数值">
+        </div>
+        <div class="input-group">
+            <label for="c">回撤位：</label>
+            <input type="number" id="c" step="any" placeholder="输入回撤点位">
+        </div>
+        
+        <div class="result-container" id="results">
+            <!-- 动态生成的结果项 -->
+        </div>
+    </div>
+
+	<footer>
+        <p>© 2024 股票技术分析 - 斐波那契比例实时计算首选</p>
+        <p>数据安全：所有计算均在本地浏览器完成，无数据上传</p>
+    </footer>
+
+    <script>
+        // 黄金分割比例配置
+        const ratios = [
+            { value: 0.236, label: '23.6%' },
+            { value: 0.382, label: '38.2%' },
+            { value: 0.5,   label: '50.0%' },
+            { value: 0.618, label: '61.8%' },
+            { value: 0.786, label: '78.6%' },
+            { value: 0.886, label: '88.6%' }
+        ];
+
+        // 初始化DOM元素
+        const resultsContainer = document.getElementById('results');
+        const resultItems = {};
+
+        // 创建结果项
+        ratios.forEach(ratio => {
+            const div = document.createElement('div');
+            div.className = 'result-item';
+            div.innerHTML = `
+                <span class="ratio-label">${ratio.label}</span>
+                <span class="result-value" data-ratio="${ratio.value}">-</span>
+            `;
+            resultsContainer.appendChild(div);
+            resultItems[ratio.value] = div.querySelector('.result-value');
+        });
+
+        // 获取输入元素
+        const bInput = document.getElementById('b');
+        const aInput = document.getElementById('a');
+        const cInput = document.getElementById('c');
+
+        // 计算函数
+        function calculateAll() {
+            const b = parseFloat(bInput.value);
+            const a = parseFloat(aInput.value);
+            const c = parseFloat(cInput.value);
+            
+            ratios.forEach(ratio => {
+                const valueElement = resultItems[ratio.value];
+                if (isNaN(b) || isNaN(a) || isNaN(c)) {
+                    valueElement.textContent = '-';
+                    return;
+                }
+
+                const difference = b - a;
+                const result = c + (difference * ratio.value);
+                valueElement.textContent = result.toFixed(2);
+            });
+        }
+
+        // 事件监听
+        bInput.addEventListener('input', calculateAll);
+        aInput.addEventListener('input', calculateAll);
+        cInput.addEventListener('input', calculateAll);
+    </script>
+</body>
+</html>
